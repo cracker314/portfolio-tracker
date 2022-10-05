@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<header th:replace="fragments :: header"></header>
+
+<form method="post">
+
+    <div class="form-group">
+        <label>Name
+            <input th:field="${investor.name}" class="form-control">
+        </label>
+        <p class="error" th:errors="${investor.name}"></p>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Add Investor" class="btn btn-primary">
+    </div>
+
+</form>
+
+</body>
+</html>

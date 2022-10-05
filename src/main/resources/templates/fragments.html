@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <title>Portfolio Application</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<header th:fragment="header">
+    <ul class="nav">
+        <li class="nav-item"><a class="nav-link" href="/investors">Investors</a></li>
+        <li class="nav-item"><a class="nav-link" href="/investors/add">Add Investor</a></li>
+        <li class="nav-item"><a class="nav-link" href="/investors/delete">Delete Investor</a></li>
+    </ul>
+    <h1 th:text="${title}">Let's Begin!</h1>
+</header>
+</body>
+</html>
