@@ -41,6 +41,7 @@ public class InvestorController {
 
         investorRepository.save(newInvestor);
         return "redirect:";
+
     }
 
     @GetMapping("delete")

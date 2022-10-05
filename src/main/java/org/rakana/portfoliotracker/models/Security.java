@@ -5,17 +5,21 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-public class Investor extends AbstractEntity {
+public class Security extends AbstractEntity {
 
     @NotBlank(message = "Name is required")
-    @Size(max= 10, message = "Name cannot be more than 10 characters long")
+    @Size(max= 20, message = "Name cannot be more than 20 characters long")
     private String name;
 
-    public Investor(String name) {
+    @NotBlank(message = "Ticker symbol is required")
+    private String ticker;
+
+    public Security(String name, String ticker) {
         this.name = name;
+        this.ticker = ticker;
     }
 
-    public Investor() {}
+    public Security() {}
 
     public String getName() {
         return name;
@@ -24,6 +28,10 @@ public class Investor extends AbstractEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getTicker() { return ticker; }
+
+    public void setTicker(String ticker) { this.ticker = ticker; }
 
     @Override
     public String toString() {
