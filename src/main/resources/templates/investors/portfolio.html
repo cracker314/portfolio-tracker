@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<header th:replace="fragments :: investorHeader"></header>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Security</th>
+        <th>Quantity</th>
+    </tr>
+    </thead>
+    <tr th:each="item : ${portfolio}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.security.name}"></td>
+        <td th:text="${item.quantity}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -10,9 +10,9 @@ public abstract class AbstractEntity {
 
     @Id // says this is the primary key
     @GeneratedValue // database will handle generating the primary key
-    private int id;
+    private Integer id;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

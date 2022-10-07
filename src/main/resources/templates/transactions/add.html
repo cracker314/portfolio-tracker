@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<header th:replace="fragments :: header"></header>
+<form method="post">
+    <div class="form-group">
+        <label>Investor
+            <select th:field="${transaction.investor}">
+                <option th:each="investor : ${investors}"
+                        th:value="${investor.id}"
+                        th:text="${investor.name}"
+                ></option>
+            </select>
+        </label>
+        <p class="error" th:errors="${transaction.investor}"></p>
+    </div>
+    <div class="form-group">
+        <label>Security
+            <select th:field="${transaction.security}">
+                <option th:each="security : ${securities}"
+                        th:value="${security.id}"
+                        th:text="${security.name}"
+                ></option>
+            </select>
+        </label>
+        <p class="error" th:errors="${transaction.security}"></p>
+    </div>
+    <div class="form-group">
+        <label>Quantity
+            <input th:field="${transaction.quantity}" class="form-control">
+        </label>
+        <p class="error" th:errors="${transaction.quantity}"></p>
+    </div>
+    <div class="form-group">
+        <label>Transaction Price
+            <input th:field="${transaction.transactedPrice}" class="form-control">
+        </label>
+        <p class="error" th:errors="${transaction.transactedPrice}"></p>
+    </div>
+    <div class="form-group">
+        <label>Action
+            <select th:field="${transaction.action}">
+                <option th:each="action : ${actions}"
+                        th:value="${action}"
+                        th:text="${action.displayName}"
+                ></option>
+            </select>
+        </label>
+        <p class="error" th:errors="${transaction.action}"></p>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Add Transaction" class="btn btn-primary">
+    </div>
+</form>
+</body>
+</html>

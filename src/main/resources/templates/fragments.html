@@ -12,12 +12,23 @@
     <ul class="nav">
         <li class="nav-item"><a class="nav-link" href="/investors">Investors</a></li>
         <li class="nav-item"><a class="nav-link" href="/investors/add">Add Investor</a></li>
-        <li class="nav-item"><a class="nav-link" href="/investors/delete">Delete Investor</a></li>
+        <li class="nav-item"><a class="nav-link" href="/investors/delete">Delete Investors</a></li>
         <li class="nav-item"><a class="nav-link" href="/securities">Securities</a></li>
         <li class="nav-item"><a class="nav-link" href="/securities/add">Add Security</a></li>
-        <li class="nav-item"><a class="nav-link" href="/securities/delete">Delete Security</a></li>
+        <li class="nav-item"><a class="nav-link" href="/securities/delete">Delete Securities</a></li>
+        <li class="nav-item"><a class="nav-link" href="/transactions">Transactions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/transactions/add">Add Transaction</a></li>
+        <li class="nav-item"><a class="nav-link" href="/transactions/delete">Delete Transactions</a></li>
     </ul>
     <h1 th:text="${title}">Let's Begin!</h1>
 </header>
+<investorHeader th:fragment="investorHeader">
+    <ul class="nav">
+        <li class="nav-item"><a class="nav-link" href="/investors">Investors</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="'/investors/portfolio?investorId='+${investorId}">Portfolio</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="'/investors/transactions?investorId='+${investorId}">Transactions</a></li>
+    </ul>
+    <h1 th:text="${title}">Let's Begin Again!</h1>
+</investorHeader>
 </body>
 </html>

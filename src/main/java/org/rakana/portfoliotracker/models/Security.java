@@ -1,8 +1,11 @@
 package org.rakana.portfoliotracker.models;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 public class Security extends AbstractEntity {
@@ -13,6 +16,12 @@ public class Security extends AbstractEntity {
 
     @NotBlank(message = "Ticker symbol is required")
     private String ticker;
+
+    @OneToMany(mappedBy = "security")
+    private List<Portfolio> portfolio;
+
+    @OneToMany(mappedBy = "security")
+    private List<Transaction> transactions;
 
     public Security(String name, String ticker) {
         this.name = name;
@@ -32,6 +41,14 @@ public class Security extends AbstractEntity {
     public String getTicker() { return ticker; }
 
     public void setTicker(String ticker) { this.ticker = ticker; }
+
+    public List<Portfolio> getPortfolio() {
+        return portfolio;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
 
     @Override
     public String toString() {

@@ -14,7 +14,7 @@
     </thead>
     <tr th:each="investor : ${investors}">
         <td th:text="${investor.id}"></td>
-        <td th:text="${investor.name}"></td>
+        <td><a th:text="${investor.name}" th:href="'/investors/portfolio?investorId='+${investor.id}"></a></td>
     </tr>
 </table>
 
