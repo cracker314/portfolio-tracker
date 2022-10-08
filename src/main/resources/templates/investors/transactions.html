@@ -2,9 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body class="container">
-
 <header th:replace="fragments :: investorHeader"></header>
-
 <table class="table table-striped">
     <thead>
     <tr>
@@ -13,7 +11,7 @@
         <th>Quantity</th>
         <th>Transaction Price</th>
         <th>Action</th>
-        <th>Capital</th>
+        <th>Value</th>
     </tr>
     </thead>
     <tr th:each="item : ${transactions}">
@@ -22,9 +20,8 @@
         <td th:text="${item.quantity}"></td>
         <td th:text="${item.transactedPrice}"></td>
         <td th:text="${item.action}"></td>
-        <td th:text="${item.capital}"></td>
+        <td th:text="${item.value}"></td>
     </tr>
 </table>
-
 </body>
 </html>

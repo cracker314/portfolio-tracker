@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SecurityRepository extends CrudRepository<Security, Integer> {
+    Security findByName(String name); // primarily used to get the security with name: Cash
 }

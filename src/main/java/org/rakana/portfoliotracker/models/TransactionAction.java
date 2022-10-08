@@ -2,7 +2,7 @@ package org.rakana.portfoliotracker.models;
 
 public enum TransactionAction {
 
-    // value related to quantity ie selling leads to lesser quantity and vice versa; the opposite is true for capital
+    // value related to quantity ie selling leads to lesser quantity and vice versa; the opposite is true for transaction value
     BUY("Buy", 1),
     SELL("Sell", -1);
 

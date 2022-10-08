@@ -2,21 +2,20 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body class="container">
-
 <header th:replace="fragments :: header"></header>
-
 <table class="table table-striped">
     <thead>
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Investment</th>
     </tr>
     </thead>
     <tr th:each="investor : ${investors}">
         <td th:text="${investor.id}"></td>
         <td><a th:text="${investor.name}" th:href="'/investors/portfolio?investorId='+${investor.id}"></a></td>
+        <td th:text="${investor.investment}"></td>
     </tr>
 </table>
-
 </body>
 </html>

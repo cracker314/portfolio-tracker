@@ -59,13 +59,14 @@ public class TransactionController {
         TransactionAction action = newTransaction.getAction();
         Investor investor = newTransaction.getInvestor();
         Security security = newTransaction.getSecurity();
+        Security cashSecurity = securityRepository.findByName("Cash");
 
-        // to check why capital field is not getting populated already
-        Integer capital = quantity * transactedPrice * action.getValue() * -1;
-        newTransaction.setCapital(capital);
+        // TODO: to check why value field is not getting populated automatically when transaction form is submitted
+        Integer transactionValue = quantity * transactedPrice * action.getValue() * -1;
+        newTransaction.setValue(transactionValue);
         transactionRepository.save(newTransaction);
 
-        // updating the portfolioRepository
+        // updating the portfolioRepository after checking if security already exists in investor portfolio
         Optional<Portfolio> result = portfolioRepository.findByInvestorAndSecurity(investor, security);
         if (result.isEmpty()) {
             Portfolio newPortfolio = new Portfolio(investor, security, quantity * action.getValue());
@@ -76,6 +77,12 @@ public class TransactionController {
             portfolio.setQuantity(existingQuantity + (quantity * action.getValue()));
             portfolioRepository.save(portfolio);
         }
+
+        // updating the cash security for the investor in portfolio repository
+        Portfolio cashPortfolio = portfolioRepository.findByInvestorAndSecurity(investor, cashSecurity).get();
+        Integer cashPortfolioQuantity = cashPortfolio.getQuantity();
+        cashPortfolio.setQuantity(cashPortfolioQuantity + transactionValue);
+        portfolioRepository.save(cashPortfolio);
 
         return "redirect:";
     }
@@ -98,14 +105,21 @@ public class TransactionController {
                 TransactionAction action = transaction.getAction();
                 Investor investor = transaction.getInvestor();
                 Security security = transaction.getSecurity();
+                Security cashSecurity = securityRepository.findByName("Cash");
+                Integer transactionValue = transaction.getValue();
 
-                // updating the portfolioRepository
-                Optional<Portfolio> portfolioOptional = portfolioRepository.findByInvestorAndSecurity(investor, security);
-                Portfolio portfolio = portfolioOptional.get();
+                // updating the stock security in portfolioRepository
+                Portfolio portfolio = portfolioRepository.findByInvestorAndSecurity(investor, security).get();
                 Integer existingQuantity = portfolio.getQuantity();
                 portfolio.setQuantity(existingQuantity + (quantity * action.getValue()) * -1);
 
+                // updating the cash security in portfolioRepository
+                Portfolio cashPortfolio = portfolioRepository.findByInvestorAndSecurity(investor, cashSecurity).get();
+                Integer cashPortfolioQuantity = cashPortfolio.getQuantity();
+                cashPortfolio.setQuantity(cashPortfolioQuantity - transactionValue);
+
                 portfolioRepository.save(portfolio);
+                portfolioRepository.save(cashPortfolio);
                 transactionRepository.deleteById(id);
             }
         }

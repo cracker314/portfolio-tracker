@@ -25,7 +25,7 @@ public class Transaction extends AbstractEntity {
     @NotNull(message = "Action selection is required")
     private TransactionAction action;
 
-    private Integer capital;
+    private Integer value;
 
     public Transaction(Investor investor, Security security, Integer quantity, Integer transactedPrice, TransactionAction action) {
         this.investor = investor;
@@ -33,7 +33,7 @@ public class Transaction extends AbstractEntity {
         this.quantity = quantity;
         this.transactedPrice = transactedPrice;
         this.action = action;
-        this.capital = quantity * transactedPrice * action.getValue();
+        this.value = quantity * transactedPrice * action.getValue();
     }
 
     public Transaction() {}
@@ -78,12 +78,12 @@ public class Transaction extends AbstractEntity {
         this.action = action;
     }
 
-    public Integer getCapital() {
-        return capital;
+    public Integer getValue() {
+        return value;
     }
 
-    public void setCapital(Integer capital) {
-        this.capital = capital;
+    public void setValue(Integer value) {
+        this.value = value;
     }
 
     @Override

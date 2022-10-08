@@ -5,6 +5,8 @@ import org.rakana.portfoliotracker.data.PortfolioRepository;
 import org.rakana.portfoliotracker.data.SecurityRepository;
 import org.rakana.portfoliotracker.data.TransactionRepository;
 import org.rakana.portfoliotracker.models.Investor;
+import org.rakana.portfoliotracker.models.Portfolio;
+import org.rakana.portfoliotracker.models.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +53,12 @@ public class InvestorController {
             return "investors/add";
         }
         investorRepository.save(newInvestor);
+
+        // update cash in portfolio repository
+        Security cashSecurity = securityRepository.findByName("Cash");
+        Portfolio portfolio = new Portfolio(newInvestor, cashSecurity, newInvestor.getInvestment());
+        portfolioRepository.save(portfolio);
+
         return "redirect:";
     }
 
