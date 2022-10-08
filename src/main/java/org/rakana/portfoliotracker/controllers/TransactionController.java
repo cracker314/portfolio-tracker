@@ -51,31 +51,29 @@ public class TransactionController {
     public String processAddTransactionForm(@ModelAttribute @Valid Transaction newTransaction, Errors errors, Model model) {
         if(errors.hasErrors()) {
             model.addAttribute("title", "Add Transaction");
-            return "transactions/add";
+            return "redirect:";
         }
 
-        // setting the transaction capital value and updating transactionRepository
-        Integer capital;
         Integer quantity = newTransaction.getQuantity();
-        if (newTransaction.getAction().getDisplayName().equals("Sell")) {
-            quantity = newTransaction.getQuantity() * -1;
-            newTransaction.setQuantity(quantity);
-        }
-        capital = newTransaction.getQuantity() * newTransaction.getTransactedPrice() * -1;
+        Integer transactedPrice = newTransaction.getTransactedPrice();
+        TransactionAction action = newTransaction.getAction();
+        Investor investor = newTransaction.getInvestor();
+        Security security = newTransaction.getSecurity();
+
+        // to check why capital field is not getting populated already
+        Integer capital = quantity * transactedPrice * action.getValue() * -1;
         newTransaction.setCapital(capital);
         transactionRepository.save(newTransaction);
 
         // updating the portfolioRepository
-        Investor investor = newTransaction.getInvestor();
-        Security security = newTransaction.getSecurity();
         Optional<Portfolio> result = portfolioRepository.findByInvestorAndSecurity(investor, security);
         if (result.isEmpty()) {
-            Portfolio newPortfolio = new Portfolio(investor, security, quantity);
+            Portfolio newPortfolio = new Portfolio(investor, security, quantity * action.getValue());
             portfolioRepository.save(newPortfolio);
         } else {
             Portfolio portfolio = result.get();
             Integer existingQuantity = portfolio.getQuantity();
-            portfolio.setQuantity(existingQuantity + quantity);
+            portfolio.setQuantity(existingQuantity + (quantity * action.getValue()));
             portfolioRepository.save(portfolio);
         }
 
@@ -93,6 +91,21 @@ public class TransactionController {
     public String processDeleteTransactionsForm(@RequestParam(required = false) int[] transactionIds) {
         if (transactionIds != null) {
             for(int id : transactionIds) {
+                Optional<Transaction> result = transactionRepository.findById(id);
+                Transaction transaction = result.get();
+
+                Integer quantity = transaction.getQuantity();
+                TransactionAction action = transaction.getAction();
+                Investor investor = transaction.getInvestor();
+                Security security = transaction.getSecurity();
+
+                // updating the portfolioRepository
+                Optional<Portfolio> portfolioOptional = portfolioRepository.findByInvestorAndSecurity(investor, security);
+                Portfolio portfolio = portfolioOptional.get();
+                Integer existingQuantity = portfolio.getQuantity();
+                portfolio.setQuantity(existingQuantity + (quantity * action.getValue()) * -1);
+
+                portfolioRepository.save(portfolio);
                 transactionRepository.deleteById(id);
             }
         }

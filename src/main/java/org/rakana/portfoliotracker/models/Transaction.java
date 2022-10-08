@@ -30,12 +30,10 @@ public class Transaction extends AbstractEntity {
     public Transaction(Investor investor, Security security, Integer quantity, Integer transactedPrice, TransactionAction action) {
         this.investor = investor;
         this.security = security;
-        if (action.getDisplayName().equals("Buy")) {
-            this.quantity = quantity;
-        } else this.quantity = quantity * -1;
+        this.quantity = quantity;
         this.transactedPrice = transactedPrice;
         this.action = action;
-        this.capital = quantity * transactedPrice * -1;
+        this.capital = quantity * transactedPrice * action.getValue();
     }
 
     public Transaction() {}
