@@ -33,7 +33,7 @@ public class Transaction extends AbstractEntity {
         this.quantity = quantity;
         this.transactedPrice = transactedPrice;
         this.action = action;
-        this.value = quantity * transactedPrice * action.getValue();
+        this.value = quantity * transactedPrice * action.getValue() * -1;
     }
 
     public Transaction() {}

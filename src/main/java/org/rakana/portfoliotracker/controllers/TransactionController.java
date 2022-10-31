@@ -66,19 +66,23 @@ public class TransactionController {
         newTransaction.setValue(transactionValue);
         transactionRepository.save(newTransaction);
 
-        // updating the portfolioRepository after checking if security already exists in investor portfolio
+        // updating the portfolio repository after checking if security already exists in investor portfolio
+        // updates investment value in investor repository if security is cash
         Optional<Portfolio> result = portfolioRepository.findByInvestorAndSecurity(investor, security);
         if (result.isEmpty()) {
             Portfolio newPortfolio = new Portfolio(investor, security, quantity * action.getValue());
             portfolioRepository.save(newPortfolio);
-        } else {
+        } else if (!security.getName().equals("Cash")) {
             Portfolio portfolio = result.get();
             Integer existingQuantity = portfolio.getQuantity();
             portfolio.setQuantity(existingQuantity + (quantity * action.getValue()));
             portfolioRepository.save(portfolio);
+        } else {
+            investor.setInvestment(investor.getInvestment() + transactionValue);
+            investorRepository.save(investor);
         }
 
-        // updating the cash security for the investor in portfolio repository
+        // updating the cash for the investor in portfolio repository
         Portfolio cashPortfolio = portfolioRepository.findByInvestorAndSecurity(investor, cashSecurity).get();
         Integer cashPortfolioQuantity = cashPortfolio.getQuantity();
         cashPortfolio.setQuantity(cashPortfolioQuantity + transactionValue);

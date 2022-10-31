@@ -4,9 +4,7 @@ import org.rakana.portfoliotracker.data.InvestorRepository;
 import org.rakana.portfoliotracker.data.PortfolioRepository;
 import org.rakana.portfoliotracker.data.SecurityRepository;
 import org.rakana.portfoliotracker.data.TransactionRepository;
-import org.rakana.portfoliotracker.models.Investor;
-import org.rakana.portfoliotracker.models.Portfolio;
-import org.rakana.portfoliotracker.models.Security;
+import org.rakana.portfoliotracker.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,6 +56,10 @@ public class InvestorController {
         Security cashSecurity = securityRepository.findByName("Cash");
         Portfolio portfolio = new Portfolio(newInvestor, cashSecurity, newInvestor.getInvestment());
         portfolioRepository.save(portfolio);
+
+        // update transaction repository
+        Transaction transaction = new Transaction(newInvestor, cashSecurity, newInvestor.getInvestment(), 1, TransactionAction.SELL);
+        transactionRepository.save(transaction);
 
         return "redirect:";
     }
