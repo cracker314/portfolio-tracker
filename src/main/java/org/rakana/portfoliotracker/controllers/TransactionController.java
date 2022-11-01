@@ -5,6 +5,7 @@ import org.rakana.portfoliotracker.data.PortfolioRepository;
 import org.rakana.portfoliotracker.data.SecurityRepository;
 import org.rakana.portfoliotracker.data.TransactionRepository;
 import org.rakana.portfoliotracker.models.*;
+import org.rakana.portfoliotracker.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +71,9 @@ public class TransactionController {
         // updates investment value in investor repository if security is cash
         Optional<Portfolio> result = portfolioRepository.findByInvestorAndSecurity(investor, security);
         if (result.isEmpty()) {
-            Portfolio newPortfolio = new Portfolio(investor, security, quantity * action.getValue());
+            Integer adjQuantity = quantity * action.getValue();
+            Integer price = StockService.findStock(security.getTicker()).getStock().getQuote().getPrice().intValue();
+            Portfolio newPortfolio = new Portfolio(investor, security, adjQuantity, price);
             portfolioRepository.save(newPortfolio);
         } else if (!security.getName().equals("Cash")) {
             Portfolio portfolio = result.get();
@@ -86,6 +89,7 @@ public class TransactionController {
         Portfolio cashPortfolio = portfolioRepository.findByInvestorAndSecurity(investor, cashSecurity).get();
         Integer cashPortfolioQuantity = cashPortfolio.getQuantity();
         cashPortfolio.setQuantity(cashPortfolioQuantity + transactionValue);
+        cashPortfolio.setValue(cashPortfolioQuantity + transactionValue);
         portfolioRepository.save(cashPortfolio);
 
         return "redirect:";

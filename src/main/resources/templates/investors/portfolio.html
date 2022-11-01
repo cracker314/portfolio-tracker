@@ -9,12 +9,16 @@
         <th>ID</th>
         <th>Security</th>
         <th>Quantity</th>
+        <th>Price</th>
+        <th>Value</th>
     </tr>
     </thead>
     <tr th:each="item : ${portfolio}">
         <td th:text="${item.id}"></td>
         <td th:text="${item.security.name}"></td>
         <td th:text="${item.quantity}"></td>
+        <td th:text="${item.currentPrice}"></td>
+        <td th:text="${item.value}"></td>
     </tr>
 </table>
 </body>
