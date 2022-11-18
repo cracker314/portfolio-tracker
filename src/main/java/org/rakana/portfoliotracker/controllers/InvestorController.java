@@ -12,7 +12,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @Controller
@@ -51,15 +50,17 @@ public class InvestorController {
             model.addAttribute("title", "Add Investor");
             return "investors/add";
         }
+
+        newInvestor.setValue(newInvestor.getInvestment());
         investorRepository.save(newInvestor);
 
         // update cash in portfolio repository
         Security cashSecurity = securityRepository.findByName("Cash");
-        Portfolio portfolio = new Portfolio(newInvestor, cashSecurity, newInvestor.getInvestment(), 1);
+        Portfolio portfolio = new Portfolio(newInvestor, cashSecurity, newInvestor.getInvestment(), 1, newInvestor.getInvestment());
         portfolioRepository.save(portfolio);
 
         // update transaction repository
-        Transaction transaction = new Transaction(newInvestor, cashSecurity, newInvestor.getInvestment(), 1, TransactionAction.SELL);
+        Transaction transaction = new Transaction(newInvestor, cashSecurity, newInvestor.getInvestment(), 1, TransactionAction.SELL, newInvestor.getInvestment());
         transactionRepository.save(transaction);
 
         return "redirect:";

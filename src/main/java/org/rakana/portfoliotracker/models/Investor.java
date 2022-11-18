@@ -18,14 +18,18 @@ public class Investor extends AbstractEntity {
     @Positive(message = "Please add the investment amount")
     private Integer investment;
 
+    private Integer value;
+
     @OneToMany(mappedBy = "investor")
     private final List<Portfolio> portfolio = new ArrayList<>();
 
     @OneToMany(mappedBy = "investor")
     private final List<Transaction> transactions = new ArrayList<>();
 
-    public Investor(String name) {
+    public Investor(String name, Integer investment, Integer value) {
         this.name = name;
+        this.investment = investment;
+        this.value = value;
     }
 
     public Investor() {}
@@ -44,6 +48,14 @@ public class Investor extends AbstractEntity {
 
     public void setInvestment(Integer investment) {
         this.investment = investment;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
     }
 
     public List<Portfolio> getPortfolio() {

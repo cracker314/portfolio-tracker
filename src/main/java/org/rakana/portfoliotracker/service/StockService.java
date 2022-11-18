@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import yahoofinance.YahooFinance;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 @Service
 public class StockService {
@@ -20,8 +19,8 @@ public class StockService {
         return null;
     }
 
-    public static BigDecimal findPrice(final StockWrapper stock) throws IOException {
-        return stock.getStock().getQuote(true).getPrice();
-    }
-
+    // method not being used presently
+    // public static BigDecimal findPrice(final StockWrapper stock) throws IOException {
+    //    return stock.getStock().getQuote(true).getPrice();
+    // }
 }

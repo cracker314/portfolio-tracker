@@ -23,12 +23,12 @@ public class Portfolio extends AbstractEntity {
 
     private Integer value;
 
-    public Portfolio(Investor investor, Security security, Integer quantity, Integer currentPrice) {
+    public Portfolio(Investor investor, Security security, Integer quantity, Integer currentPrice, Integer value) {
         this.investor = investor;
         this.security = security;
         this.quantity = quantity;
         this.currentPrice = currentPrice;
-        this.value = quantity * currentPrice;
+        this.value = value;
     }
 
     public Portfolio() {}

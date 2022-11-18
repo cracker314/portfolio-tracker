@@ -9,12 +9,14 @@
         <th>ID</th>
         <th>Name</th>
         <th>Investment</th>
+        <th>Portfolio Value</th>
     </tr>
     </thead>
     <tr th:each="investor : ${investors}">
         <td th:text="${investor.id}"></td>
         <td><a th:text="${investor.name}" th:href="'/investors/portfolio?investorId='+${investor.id}"></a></td>
         <td th:text="${investor.investment}"></td>
+        <td th:text="${investor.value}"></td>
     </tr>
 </table>
 </body>

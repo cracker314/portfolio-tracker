@@ -55,6 +55,7 @@ public class TransactionController {
             return "redirect:";
         }
 
+        // Initial declarations
         Integer quantity = newTransaction.getQuantity();
         Integer transactedPrice = newTransaction.getTransactedPrice();
         TransactionAction action = newTransaction.getAction();
@@ -62,26 +63,27 @@ public class TransactionController {
         Security security = newTransaction.getSecurity();
         Security cashSecurity = securityRepository.findByName("Cash");
 
-        // TODO: to check why value field is not getting populated automatically when transaction form is submitted
+        // update transaction repository
         Integer transactionValue = quantity * transactedPrice * action.getValue() * -1;
         newTransaction.setValue(transactionValue);
         transactionRepository.save(newTransaction);
 
-        // updating the portfolio repository after checking if security already exists in investor portfolio
-        // updates investment value in investor repository if security is cash
+        // update portfolio repository after checking if security already exists in investor portfolio
+        // update investment and value in investor repository if security is cash
         Optional<Portfolio> result = portfolioRepository.findByInvestorAndSecurity(investor, security);
+        // if result is empty it means the security is an actual stock and not cash
         if (result.isEmpty()) {
-            Integer adjQuantity = quantity * action.getValue();
             Integer price = StockService.findStock(security.getTicker()).getStock().getQuote().getPrice().intValue();
-            Portfolio newPortfolio = new Portfolio(investor, security, adjQuantity, price);
+            Portfolio newPortfolio = new Portfolio(investor, security, quantity, price, quantity * price);
             portfolioRepository.save(newPortfolio);
         } else if (!security.getName().equals("Cash")) {
             Portfolio portfolio = result.get();
             Integer existingQuantity = portfolio.getQuantity();
-            portfolio.setQuantity(existingQuantity + (quantity * action.getValue()));
+            portfolio.setQuantity(existingQuantity + (quantity * action.getValue())); // TODO: insert limitation of not being able to sell more than existing quantity
             portfolioRepository.save(portfolio);
         } else {
             investor.setInvestment(investor.getInvestment() + transactionValue);
+            investor.setValue(investor.getValue() + transactionValue);
             investorRepository.save(investor);
         }
 

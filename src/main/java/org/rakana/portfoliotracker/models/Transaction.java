@@ -27,13 +27,13 @@ public class Transaction extends AbstractEntity {
 
     private Integer value;
 
-    public Transaction(Investor investor, Security security, Integer quantity, Integer transactedPrice, TransactionAction action) {
+    public Transaction(Investor investor, Security security, Integer quantity, Integer transactedPrice, TransactionAction action, Integer value) {
         this.investor = investor;
         this.security = security;
         this.quantity = quantity;
         this.transactedPrice = transactedPrice;
         this.action = action;
-        this.value = quantity * transactedPrice * action.getValue() * -1;
+        this.value = value;
     }
 
     public Transaction() {}
