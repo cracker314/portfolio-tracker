@@ -2,6 +2,7 @@ package org.rakana.portfoliotracker.controllers;
 
 import org.rakana.portfoliotracker.data.SecurityRepository;
 import org.rakana.portfoliotracker.models.Security;
+import org.rakana.portfoliotracker.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +38,14 @@ public class SecurityController {
         if(errors.hasErrors()) {
             model.addAttribute("title", "Add Security");
             return "securities/add";
+        }
+
+        if (newSecurity.getName().equals("Cash")) {
+            newSecurity.setCurrentPrice(1);
+        }
+        else {
+            Integer price = StockService.findStock(newSecurity.getTicker()).getStock().getQuote().getPrice().intValue();
+            newSecurity.setCurrentPrice(price);
         }
 
         securityRepository.save(newSecurity);

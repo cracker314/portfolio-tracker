@@ -73,7 +73,7 @@ public class TransactionController {
         Optional<Portfolio> result = portfolioRepository.findByInvestorAndSecurity(investor, security);
         // if result is empty it means the security is an actual stock and not cash
         if (result.isEmpty()) {
-            Integer price = StockService.findStock(security.getTicker()).getStock().getQuote().getPrice().intValue();
+            Integer price = security.getCurrentPrice();
             Portfolio newPortfolio = new Portfolio(investor, security, quantity, price, quantity * price);
             portfolioRepository.save(newPortfolio);
         } else if (!security.getName().equals("Cash")) {
