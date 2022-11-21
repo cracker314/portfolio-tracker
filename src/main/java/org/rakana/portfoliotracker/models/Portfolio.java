@@ -61,6 +61,10 @@ public class Portfolio extends AbstractEntity {
         return currentPrice;
     }
 
+    public void setCurrentPrice(Integer currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
     public Integer getValue() {
         return value;
     }

@@ -5,7 +5,6 @@ import org.rakana.portfoliotracker.data.PortfolioRepository;
 import org.rakana.portfoliotracker.data.SecurityRepository;
 import org.rakana.portfoliotracker.data.TransactionRepository;
 import org.rakana.portfoliotracker.models.*;
-import org.rakana.portfoliotracker.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,17 +70,17 @@ public class TransactionController {
         // update portfolio repository after checking if security already exists in investor portfolio
         // update investment and value in investor repository if security is cash
         Optional<Portfolio> result = portfolioRepository.findByInvestorAndSecurity(investor, security);
-        // if result is empty it means the security is an actual stock and not cash
+        // if result is empty it means the security is an actual stock and not cash as cash has already been initialized
         if (result.isEmpty()) {
             Integer price = security.getCurrentPrice();
             Portfolio newPortfolio = new Portfolio(investor, security, quantity, price, quantity * price);
             portfolioRepository.save(newPortfolio);
-        } else if (!security.getName().equals("Cash")) {
+        } else if (!security.getName().equals("Cash")) { // if security already exists
             Portfolio portfolio = result.get();
             Integer existingQuantity = portfolio.getQuantity();
             portfolio.setQuantity(existingQuantity + (quantity * action.getValue())); // TODO: insert limitation of not being able to sell more than existing quantity
             portfolioRepository.save(portfolio);
-        } else {
+        } else { // if security is cash
             investor.setInvestment(investor.getInvestment() + transactionValue);
             investor.setValue(investor.getValue() + transactionValue);
             investorRepository.save(investor);
