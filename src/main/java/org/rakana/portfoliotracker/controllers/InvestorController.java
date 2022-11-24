@@ -5,6 +5,7 @@ import org.rakana.portfoliotracker.data.PortfolioRepository;
 import org.rakana.portfoliotracker.data.SecurityRepository;
 import org.rakana.portfoliotracker.data.TransactionRepository;
 import org.rakana.portfoliotracker.models.*;
+import org.rakana.portfoliotracker.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,6 +34,44 @@ public class InvestorController {
 
     @GetMapping
     public String displayInvestors(Model model) {
+
+        // updates security prices in security and portfolio repository on starting the app
+        Iterable<Security> securities = securityRepository.findAll();
+
+        for (Security security : securities) {
+            if (!security.getName().equals("Cash")) {
+
+                Double price = StockService.findStock(security.getTicker()).getStock().getQuote().getPrice().doubleValue();
+
+                security.setCurrentPrice(price);
+                securityRepository.save(security);
+
+                List<Portfolio> portfolio = security.getPortfolio();
+                for (Portfolio portfolioItem : portfolio) {
+                    portfolioItem.setCurrentPrice(price);
+                    portfolioItem.setValue(portfolioItem.getQuantity() * price);
+                    portfolioRepository.save(portfolioItem);
+                }
+
+            }
+        }
+
+        // updates portfolio value of investor
+        Iterable<Investor> investors = investorRepository.findAll();
+
+        for (Investor investor : investors) {
+
+            Double value = 0.0;
+            List<Portfolio> portfolio = investor.getPortfolio();
+
+            for (Portfolio portfolioItem : portfolio) {
+                value = value + portfolioItem.getValue();
+            }
+
+            investor.setValue(value);
+            investorRepository.save(investor);
+        }
+
         model.addAttribute("title", "List of Investors");
         model.addAttribute("investors", investorRepository.findAll());
         return "investors/index";
