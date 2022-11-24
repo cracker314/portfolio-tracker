@@ -19,11 +19,11 @@ public class Portfolio extends AbstractEntity {
     private Integer quantity;
 
     @NotNull
-    private Integer currentPrice;
+    private Double currentPrice;
 
-    private Integer value;
+    private Double value;
 
-    public Portfolio(Investor investor, Security security, Integer quantity, Integer currentPrice, Integer value) {
+    public Portfolio(Investor investor, Security security, Integer quantity, Double currentPrice, Double value) {
         this.investor = investor;
         this.security = security;
         this.quantity = quantity;
@@ -57,19 +57,19 @@ public class Portfolio extends AbstractEntity {
         this.quantity = quantity;
     }
 
-    public Integer getCurrentPrice() {
+    public Double getCurrentPrice() {
         return currentPrice;
     }
 
-    public void setCurrentPrice(Integer currentPrice) {
+    public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

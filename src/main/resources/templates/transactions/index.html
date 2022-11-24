@@ -9,6 +9,7 @@
         <th>ID</th>
         <th>Investor</th>
         <th>Security</th>
+        <th>Date</th>
         <th>Quantity</th>
         <th>Transaction Price</th>
         <th>Action</th>
@@ -19,6 +20,7 @@
         <td th:text="${item.id}"></td>
         <td th:text="${item.investor.name}"></td>
         <td th:text="${item.security.name}"></td>
+        <td th:text="${item.date}"></td>
         <td th:text="${item.quantity}"></td>
         <td th:text="${item.transactedPrice}"></td>
         <td th:text="${item.action}"></td>

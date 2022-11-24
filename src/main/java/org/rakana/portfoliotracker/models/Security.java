@@ -16,7 +16,7 @@ public class Security extends AbstractEntity {
     @NotBlank(message = "Ticker symbol is required")
     private String ticker;
 
-    private Integer currentPrice;
+    private Double currentPrice;
 
     @OneToMany(mappedBy = "security")
     private List<Portfolio> portfolio;
@@ -24,7 +24,7 @@ public class Security extends AbstractEntity {
     @OneToMany(mappedBy = "security")
     private List<Transaction> transactions;
 
-    public Security(String name, String ticker, Integer currentPrice) {
+    public Security(String name, String ticker, Double currentPrice) {
         this.name = name;
         this.ticker = ticker;
         this.currentPrice = currentPrice;
@@ -44,11 +44,11 @@ public class Security extends AbstractEntity {
 
     public void setTicker(String ticker) { this.ticker = ticker; }
 
-    public Integer getCurrentPrice() {
+    public Double getCurrentPrice() {
         return currentPrice;
     }
 
-    public void setCurrentPrice(Integer currentPrice) {
+    public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
     }
 

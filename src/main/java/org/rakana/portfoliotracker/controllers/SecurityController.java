@@ -41,10 +41,10 @@ public class SecurityController {
         }
 
         if (newSecurity.getName().equals("Cash")) {
-            newSecurity.setCurrentPrice(1);
+            newSecurity.setCurrentPrice(1.0);
         }
         else {
-            Integer price = StockService.findStock(newSecurity.getTicker()).getStock().getQuote().getPrice().intValue();
+            Double price = StockService.findStock(newSecurity.getTicker()).getStock().getQuote().getPrice().doubleValue();
             newSecurity.setCurrentPrice(price);
         }
 

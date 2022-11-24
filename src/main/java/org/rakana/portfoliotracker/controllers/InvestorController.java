@@ -51,16 +51,19 @@ public class InvestorController {
             return "investors/add";
         }
 
-        newInvestor.setValue(newInvestor.getInvestment());
+        // converting Integer value to Double
+        Double value = Double.valueOf(newInvestor.getInvestment());
+
+        newInvestor.setValue(value);
         investorRepository.save(newInvestor);
 
         // update cash in portfolio repository
         Security cashSecurity = securityRepository.findByName("Cash");
-        Portfolio portfolio = new Portfolio(newInvestor, cashSecurity, newInvestor.getInvestment(), 1, newInvestor.getInvestment());
+        Portfolio portfolio = new Portfolio(newInvestor, cashSecurity, newInvestor.getInvestment(), 1.0, value);
         portfolioRepository.save(portfolio);
 
         // update transaction repository
-        Transaction transaction = new Transaction(newInvestor, cashSecurity, newInvestor.getInvestment(), 1, TransactionAction.SELL, newInvestor.getInvestment());
+        Transaction transaction = new Transaction(newInvestor, cashSecurity, newInvestor.getDate(), newInvestor.getInvestment(), 1.0, TransactionAction.SELL, value);
         transactionRepository.save(transaction);
 
         return "redirect:";

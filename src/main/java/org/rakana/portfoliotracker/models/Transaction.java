@@ -1,9 +1,11 @@
 package org.rakana.portfoliotracker.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 @Entity
 public class Transaction extends AbstractEntity {
@@ -16,20 +18,26 @@ public class Transaction extends AbstractEntity {
     @NotNull(message = "Security selection is required")
     private Security security;
 
+//    @NotNull(message = "Date is required")
+//    @PastOrPresent(message= "Input needs to be a date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+
     @NotNull(message = "Transacted quantity is required")
     private Integer quantity;
 
-    @Positive(message = "Transacted price needs to be a positive number")
-    private Integer transactedPrice;
+    @NotNull(message = "Transacted price needs to be a positive number")
+    private Double transactedPrice;
 
     @NotNull(message = "Action selection is required")
     private TransactionAction action;
 
-    private Integer value;
+    private Double value;
 
-    public Transaction(Investor investor, Security security, Integer quantity, Integer transactedPrice, TransactionAction action, Integer value) {
+    public Transaction(Investor investor, Security security, LocalDate date, Integer quantity, Double transactedPrice, TransactionAction action, Double value) {
         this.investor = investor;
         this.security = security;
+        this.date = date;
         this.quantity = quantity;
         this.transactedPrice = transactedPrice;
         this.action = action;
@@ -54,6 +62,14 @@ public class Transaction extends AbstractEntity {
         this.security = security;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -62,11 +78,11 @@ public class Transaction extends AbstractEntity {
         this.quantity = quantity;
     }
 
-    public Integer getTransactedPrice() {
+    public Double getTransactedPrice() {
         return transactedPrice;
     }
 
-    public void setTransactedPrice(Integer transactedPrice) {
+    public void setTransactedPrice(Double transactedPrice) {
         this.transactedPrice = transactedPrice;
     }
 
@@ -78,11 +94,11 @@ public class Transaction extends AbstractEntity {
         this.action = action;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

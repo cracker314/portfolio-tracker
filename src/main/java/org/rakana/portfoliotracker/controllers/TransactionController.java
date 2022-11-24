@@ -56,14 +56,14 @@ public class TransactionController {
 
         // Initial declarations
         Integer quantity = newTransaction.getQuantity();
-        Integer transactedPrice = newTransaction.getTransactedPrice();
+        Double transactedPrice = newTransaction.getTransactedPrice();
         TransactionAction action = newTransaction.getAction();
         Investor investor = newTransaction.getInvestor();
         Security security = newTransaction.getSecurity();
         Security cashSecurity = securityRepository.findByName("Cash");
 
         // update transaction repository
-        Integer transactionValue = quantity * transactedPrice * action.getValue() * -1;
+        Double transactionValue = quantity * transactedPrice * action.getValue() * -1;
         newTransaction.setValue(transactionValue);
         transactionRepository.save(newTransaction);
 
@@ -72,7 +72,7 @@ public class TransactionController {
         Optional<Portfolio> result = portfolioRepository.findByInvestorAndSecurity(investor, security);
         // if result is empty it means the security is an actual stock and not cash as cash has already been initialized
         if (result.isEmpty()) {
-            Integer price = security.getCurrentPrice();
+            Double price = security.getCurrentPrice();
             Portfolio newPortfolio = new Portfolio(investor, security, quantity, price, quantity * price);
             portfolioRepository.save(newPortfolio);
         } else if (!security.getName().equals("Cash")) { // if security already exists
@@ -81,7 +81,7 @@ public class TransactionController {
             portfolio.setQuantity(existingQuantity + (quantity * action.getValue())); // TODO: insert limitation of not being able to sell more than existing quantity
             portfolioRepository.save(portfolio);
         } else { // if security is cash
-            investor.setInvestment(investor.getInvestment() + transactionValue);
+            investor.setInvestment((int) (investor.getInvestment() + transactionValue));
             investor.setValue(investor.getValue() + transactionValue);
             investorRepository.save(investor);
         }
@@ -89,7 +89,7 @@ public class TransactionController {
         // updating the cash for the investor in portfolio repository
         Portfolio cashPortfolio = portfolioRepository.findByInvestorAndSecurity(investor, cashSecurity).get();
         Integer cashPortfolioQuantity = cashPortfolio.getQuantity();
-        cashPortfolio.setQuantity(cashPortfolioQuantity + transactionValue);
+        cashPortfolio.setQuantity((int) (cashPortfolioQuantity + transactionValue));
         cashPortfolio.setValue(cashPortfolioQuantity + transactionValue);
         portfolioRepository.save(cashPortfolio);
 
@@ -115,7 +115,7 @@ public class TransactionController {
                 Investor investor = transaction.getInvestor();
                 Security security = transaction.getSecurity();
                 Security cashSecurity = securityRepository.findByName("Cash");
-                Integer transactionValue = transaction.getValue();
+                Double transactionValue = transaction.getValue();
 
                 // updating the stock security in portfolioRepository
                 Portfolio portfolio = portfolioRepository.findByInvestorAndSecurity(investor, security).get();
@@ -125,7 +125,7 @@ public class TransactionController {
                 // updating the cash security in portfolioRepository
                 Portfolio cashPortfolio = portfolioRepository.findByInvestorAndSecurity(investor, cashSecurity).get();
                 Integer cashPortfolioQuantity = cashPortfolio.getQuantity();
-                cashPortfolio.setQuantity(cashPortfolioQuantity - transactionValue);
+                cashPortfolio.setQuantity((int) (cashPortfolioQuantity - transactionValue));
 
                 portfolioRepository.save(portfolio);
                 portfolioRepository.save(cashPortfolio);

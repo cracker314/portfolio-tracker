@@ -1,10 +1,11 @@
 package org.rakana.portfoliotracker.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,13 @@ public class Investor extends AbstractEntity {
     @Size(max= 10, message = "Name cannot be more than 10 characters long")
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+
     @Positive(message = "Please add the investment amount")
     private Integer investment;
 
-    private Integer value;
+    private Double value;
 
     @OneToMany(mappedBy = "investor")
     private final List<Portfolio> portfolio = new ArrayList<>();
@@ -26,8 +30,9 @@ public class Investor extends AbstractEntity {
     @OneToMany(mappedBy = "investor")
     private final List<Transaction> transactions = new ArrayList<>();
 
-    public Investor(String name, Integer investment, Integer value) {
+    public Investor(String name, LocalDate date, Integer investment, Double value) {
         this.name = name;
+        this.date = date;
         this.investment = investment;
         this.value = value;
     }
@@ -42,6 +47,14 @@ public class Investor extends AbstractEntity {
         this.name = name;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public Integer getInvestment() {
         return investment;
     }
@@ -50,11 +63,11 @@ public class Investor extends AbstractEntity {
         this.investment = investment;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

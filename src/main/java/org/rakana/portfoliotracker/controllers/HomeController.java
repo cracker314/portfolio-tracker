@@ -33,7 +33,9 @@ public class HomeController {
 
         for (Security security : securities) {
             if (!security.getName().equals("Cash")) {
-                Integer price = StockService.findStock(security.getTicker()).getStock().getQuote().getPrice().intValue();
+
+                Double price = StockService.findStock(security.getTicker()).getStock().getQuote().getPrice().doubleValue();
+
                 security.setCurrentPrice(price);
                 securityRepository.save(security);
 
@@ -43,6 +45,7 @@ public class HomeController {
                     portfolioItem.setValue(portfolioItem.getQuantity() * price);
                     portfolioRepository.save(portfolioItem);
                 }
+
             }
         }
 
@@ -51,7 +54,7 @@ public class HomeController {
 
         for (Investor investor : investors) {
 
-            Integer value = 0;
+            Double value = 0.0;
             List<Portfolio> portfolio = investor.getPortfolio();
 
             for (Portfolio portfolioItem : portfolio) {

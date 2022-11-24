@@ -27,6 +27,12 @@
         <p class="error" th:errors="${transaction.security}"></p>
     </div>
     <div class="form-group">
+        <label>Date
+            <input type="date" th:field="${transaction.date}" class="form-control">
+        </label>
+        <p class="error" th:errors="${transaction.date}"></p>
+    </div>
+    <div class="form-group">
         <label>Quantity
             <input th:field="${transaction.quantity}" class="form-control">
         </label>

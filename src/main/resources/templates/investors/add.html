@@ -11,6 +11,12 @@
         <p class="error" th:errors="${investor.name}"></p>
     </div>
     <div class="form-group">
+        <label>Date
+            <input type="date" th:field="${investor.date}" class="form-control">
+        </label>
+        <p class="error" th:errors="${investor.date}"></p>
+    </div>
+    <div class="form-group">
         <label>Investment
             <input th:field="${investor.investment}" class="form-control">
         </label>
