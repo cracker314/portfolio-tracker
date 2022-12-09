@@ -3,6 +3,8 @@ package org.rakana.portfoliotracker.models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Portfolio extends AbstractEntity {
@@ -16,6 +18,7 @@ public class Portfolio extends AbstractEntity {
     private Security security;
 
     @NotNull
+    @PositiveOrZero(message = "Quantity needs to be positive")
     private Integer quantity;
 
     @NotNull

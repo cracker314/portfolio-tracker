@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Entity
@@ -24,9 +26,11 @@ public class Transaction extends AbstractEntity {
     private LocalDate date;
 
     @NotNull(message = "Transacted quantity is required")
+    @PositiveOrZero(message = "Quantity needs to be positive")
     private Integer quantity;
 
     @NotNull(message = "Transacted price needs to be a positive number")
+    @Positive(message = "Price needs to be positive")
     private Double transactedPrice;
 
     @NotNull(message = "Action selection is required")
